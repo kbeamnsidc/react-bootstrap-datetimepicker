@@ -136,7 +136,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      },
 	      viewDate: (0, _moment2["default"])(this.props.dateTime, this.props.format, true).startOf("month"),
 	      selectedDate: (0, _moment2["default"])(this.props.dateTime, this.props.format, true),
-	      inputValue: typeof this.props.defaultText !== "undefined" ? this.props.defaultText : (0, _moment2["default"])(this.props.dateTime, this.props.format, true).format(this.resolvePropsInputFormat())
+	      inputValue: typeof this.props.defaultText !== "undefined" ? this.props.defaultText : (0, _moment2["default"])(this.props.dateTime, this.props.format, true).format(this.resolvePropsInputFormat()),
+	      shouldTriggerChangeEvent: false
 	    };
 
 	    this.componentWillReceiveProps = function (nextProps) {
@@ -154,19 +155,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return _this.setState(state);
 	    };
 
+	    this.onBlur = function (event) {
+	      // Set the input to the last known good date and trigger an
+	      // onChange if necessary.
+	      var selectedDate = (0, _moment2["default"])(_this.state.selectedDate, _this.state.inputFormat, true).format(_this.props.format);
+	      _this.setState({
+	        inputValue: selectedDate
+	      });
+
+	      if (_this.state.shouldTriggerChangeEvent) {
+	        _this.props.onChange(selectedDate);
+	        _this.setState({
+	          shouldTriggerChangeEvent: false
+	        });
+	      }
+	    };
+
 	    this.onChange = function (event) {
+	      // If the date in the input is valid, keep it, and remember to
+	      // trigger an onChange event for this component since we now have
+	      // a good date.
 	      var value = event.target == null ? event : event.target.value;
 	      if ((0, _moment2["default"])(value, _this.state.inputFormat, true).isValid()) {
 	        _this.setState({
 	          selectedDate: (0, _moment2["default"])(value, _this.state.inputFormat, true),
-	          viewDate: (0, _moment2["default"])(value, _this.state.inputFormat, true).startOf("month")
+	          viewDate: (0, _moment2["default"])(value, _this.state.inputFormat, true).startOf("month"),
+	          shouldTriggerChangeEvent: true
 	        });
 	      }
 
 	      return _this.setState({
 	        inputValue: value
-	      }, function () {
-	        return this.props.onChange((0, _moment2["default"])(this.state.inputValue, this.state.inputFormat, true).format(this.props.format), value);
 	      });
 	    };
 
@@ -453,7 +472,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _react2["default"].createElement(
 	          "div",
 	          { className: "input-group date " + this.size(), ref: "datetimepicker" },
-	          _react2["default"].createElement("input", _extends({ className: "form-control", onChange: this.onChange, type: "text", value: this.state.inputValue }, this.props.inputProps)),
+	          _react2["default"].createElement("input", _extends({ className: "form-control", onBlur: this.onBlur, onChange: this.onChange, type: "text", value: this.state.inputValue }, this.props.inputProps)),
 	          _react2["default"].createElement(
 	            "span",
 	            { className: "input-group-addon", onBlur: this.onBlur, onClick: this.onClick, ref: "dtpbutton" },
@@ -474,6 +493,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      mode: _ConstantsJs2["default"].MODE_DATETIME,
 	      onChange: function onChange(x) {
 	        console.log(x);
+	      },
+	      onBlur: function onBlur(x) {
+	        console.log(x);
 	      }
 	    },
 	    enumerable: true
@@ -482,6 +504,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: {
 	      dateTime: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.number]),
 	      onChange: _react.PropTypes.func,
+	      onBlur: _react.PropTypes.func,
 	      format: _react.PropTypes.string,
 	      inputProps: _react.PropTypes.object,
 	      inputFormat: _react.PropTypes.string,
@@ -1064,7 +1087,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 	  Copyright (c) 2015 Jed Watson.
 	  Licensed under the MIT License (MIT), see
 	  http://jedwatson.github.io/classnames
@@ -1105,9 +1128,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			module.exports = classNames;
 		} else if (true) {
 			// register as 'classnames', consistent with npm package name
-			!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
 				return classNames;
-			}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 		} else {
 			window.classNames = classNames;
 		}

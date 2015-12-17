@@ -15,6 +15,9 @@ export default class DateTimeField extends Component {
     mode: Constants.MODE_DATETIME,
     onChange: (x) => {
       console.log(x);
+    },
+    onBlur: (x) => {
+      console.log(x);
     }
   }
 
@@ -36,6 +39,7 @@ export default class DateTimeField extends Component {
       PropTypes.number
     ]),
     onChange: PropTypes.func,
+    onBlur: PropTypes.func,
     format: PropTypes.string,
     inputProps: PropTypes.object,
     inputFormat: PropTypes.string,
@@ -63,7 +67,9 @@ export default class DateTimeField extends Component {
       },
       viewDate: moment(this.props.dateTime, this.props.format, true).startOf("month"),
       selectedDate: moment(this.props.dateTime, this.props.format, true),
-      inputValue: typeof this.props.defaultText !== "undefined" ? this.props.defaultText : moment(this.props.dateTime, this.props.format, true).format(this.resolvePropsInputFormat())
+      inputValue: typeof this.props.defaultText !== "undefined" ?
+          this.props.defaultText : moment(this.props.dateTime, this.props.format, true).format(this.resolvePropsInputFormat()),
+      shouldTriggerChangeEvent: false
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -81,23 +87,38 @@ export default class DateTimeField extends Component {
     return this.setState(state);
   }
 
+  onBlur = (event) => {
+    // Set the input to the last known good date and trigger an
+    // onChange if necessary.
+    const selectedDate = moment(this.state.selectedDate, this.state.inputFormat, true).format(this.props.format);
+    this.setState({
+      inputValue: selectedDate
+    });
 
+    if (this.state.shouldTriggerChangeEvent) {
+      this.props.onChange(selectedDate);
+      this.setState({
+        shouldTriggerChangeEvent: false
+      });
+    }
+  }
 
   onChange = (event) => {
+    // If the date in the input is valid, keep it, and remember to
+    // trigger an onChange event for this component since we now have
+    // a good date.
     const value = event.target == null ? event : event.target.value;
     if (moment(value, this.state.inputFormat, true).isValid()) {
       this.setState({
         selectedDate: moment(value, this.state.inputFormat, true),
-        viewDate: moment(value, this.state.inputFormat, true).startOf("month")
+        viewDate: moment(value, this.state.inputFormat, true).startOf("month"),
+        shouldTriggerChangeEvent: true
       });
     }
 
     return this.setState({
       inputValue: value
-    }, function() {
-      return this.props.onChange(moment(this.state.inputValue, this.state.inputFormat, true).format(this.props.format), value);
     });
-
   }
 
   getValue = () => {
@@ -373,7 +394,7 @@ export default class DateTimeField extends Component {
                   widgetStyle={this.state.widgetStyle}
             />
             <div className={"input-group date " + this.size()} ref="datetimepicker">
-              <input className="form-control" onChange={this.onChange} type="text" value={this.state.inputValue} {...this.props.inputProps}/>
+              <input className="form-control" onBlur={this.onBlur} onChange={this.onChange} type="text" value={this.state.inputValue} {...this.props.inputProps}/>
               <span className="input-group-addon" onBlur={this.onBlur} onClick={this.onClick} ref="dtpbutton">
                 <span className={classnames("glyphicon", this.state.buttonIcon)} />
               </span>
@@ -382,4 +403,3 @@ export default class DateTimeField extends Component {
     );
   }
 }
-
