@@ -1064,7 +1064,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 	  Copyright (c) 2015 Jed Watson.
 	  Licensed under the MIT License (MIT), see
 	  http://jedwatson.github.io/classnames
@@ -1105,9 +1105,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			module.exports = classNames;
 		} else if (true) {
 			// register as 'classnames', consistent with npm package name
-			!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
 				return classNames;
-			}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 		} else {
 			window.classNames = classNames;
 		}
@@ -1546,7 +1546,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      days = prevMonth.daysInMonth();
 	      prevMonth.date(days).startOf("week");
 	      nextMonth = (0, _moment2["default"])(prevMonth).clone().add(42, "d");
-	      minDate = _this.props.minDate ? _this.props.minDate.clone().subtract(1, "days") : _this.props.minDate;
+	      minDate = _this.props.minDate ? _this.props.minDate.clone() : _this.props.minDate;
 	      maxDate = _this.props.maxDate ? _this.props.maxDate.clone() : _this.props.maxDate;
 	      html = [];
 	      cells = [];
