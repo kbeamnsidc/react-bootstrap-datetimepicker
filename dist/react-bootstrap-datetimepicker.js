@@ -1569,7 +1569,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      days = prevMonth.daysInMonth();
 	      prevMonth.date(days).startOf("week");
 	      nextMonth = (0, _moment2["default"])(prevMonth).clone().add(42, "d");
-	      minDate = _this.props.minDate ? _this.props.minDate.clone().subtract(1, "days") : _this.props.minDate;
+	      minDate = _this.props.minDate ? _this.props.minDate.clone() : _this.props.minDate;
 	      maxDate = _this.props.maxDate ? _this.props.maxDate.clone() : _this.props.maxDate;
 	      html = [];
 	      cells = [];
