@@ -108,7 +108,7 @@ export default class DateTimeField extends Component {
     // trigger an onChange event for this component since we now have
     // a good date.
     const value = event.target == null ? event : event.target.value;
-    if (moment(value, this.state.inputFormat, true).isValid()) {
+    if (this.isValidValue(value)) {
       this.setState({
         selectedDate: moment(value, this.state.inputFormat, true),
         viewDate: moment(value, this.state.inputFormat, true).startOf("month"),
@@ -119,6 +119,13 @@ export default class DateTimeField extends Component {
     return this.setState({
       inputValue: value
     });
+  }
+
+  isValidValue = (value) => {
+    const dateTime = moment(value, this.state.inputFormat, true),
+          min = moment(this.props.minDate),
+          max = moment(this.props.maxDate);
+    return dateTime.isValid() && dateTime.isBetween(min, max);
   }
 
   getValue = () => {

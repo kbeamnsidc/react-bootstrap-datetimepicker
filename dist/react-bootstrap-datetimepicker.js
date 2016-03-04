@@ -176,7 +176,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // trigger an onChange event for this component since we now have
 	      // a good date.
 	      var value = event.target == null ? event : event.target.value;
-	      if ((0, _moment2["default"])(value, _this.state.inputFormat, true).isValid()) {
+	      if (_this.isValidValue(value)) {
 	        _this.setState({
 	          selectedDate: (0, _moment2["default"])(value, _this.state.inputFormat, true),
 	          viewDate: (0, _moment2["default"])(value, _this.state.inputFormat, true).startOf("month"),
@@ -187,6 +187,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return _this.setState({
 	        inputValue: value
 	      });
+	    };
+
+	    this.isValidValue = function (value) {
+	      var dateTime = (0, _moment2["default"])(value, _this.state.inputFormat, true),
+	          min = (0, _moment2["default"])(_this.props.minDate),
+	          max = (0, _moment2["default"])(_this.props.maxDate);
+	      return dateTime.isValid() && dateTime.isBetween(min, max);
 	    };
 
 	    this.getValue = function () {
