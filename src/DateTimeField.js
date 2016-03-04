@@ -122,9 +122,9 @@ export default class DateTimeField extends Component {
   }
 
   isValidValue = (value) => {
-    const dateTime = moment(value, this.state.inputFormat, true),
-          min = moment(this.props.minDate),
-          max = moment(this.props.maxDate);
+    const dateTime = moment.utc(value, this.state.inputFormat, true),
+          min = moment.utc(this.props.minDate),
+          max = moment.utc(this.props.maxDate);
     return dateTime.isValid() && dateTime.isBetween(min, max);
   }
 

@@ -190,9 +190,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 
 	    this.isValidValue = function (value) {
-	      var dateTime = (0, _moment2["default"])(value, _this.state.inputFormat, true),
-	          min = (0, _moment2["default"])(_this.props.minDate),
-	          max = (0, _moment2["default"])(_this.props.maxDate);
+	      var dateTime = _moment2["default"].utc(value, _this.state.inputFormat, true),
+	          min = _moment2["default"].utc(_this.props.minDate),
+	          max = _moment2["default"].utc(_this.props.maxDate);
 	      return dateTime.isValid() && dateTime.isBetween(min, max);
 	    };
 
